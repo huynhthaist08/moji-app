@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Kết nối mongDB với Server
 export const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGODB_CONNECTIONSTRING);
