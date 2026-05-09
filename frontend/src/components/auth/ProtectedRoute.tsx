@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
     const [starting, setStarting] = useState(true);
 
     const init = async () => {
-        // Có thể xảy ra khi refresh trang
+        // có thể xảy ra khi refresh trang
         if (!accessToken) {
             await refresh();
         }
@@ -32,17 +32,10 @@ const ProtectedRoute = () => {
     }
 
     if (!accessToken) {
-        return <Navigate to={"/signin"} replace />;
+        return <Navigate to="/signin" replace />;
     }
 
-    return (
-        <>
-            <Outlet></Outlet>
-        </>
-    );
+    return <Outlet></Outlet>;
 };
 
 export default ProtectedRoute;
-
-// replace: thay thế route hiện tại trong lịch sử trình duyệt -> ko thể quay về route đó
-// <Outlet></Outlet>: hiển thị route con bên trong route cha

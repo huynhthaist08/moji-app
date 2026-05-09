@@ -2,14 +2,13 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "../ui/label";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Label } from "../ui/label";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "react-router";
 
-// signUpSchema: schema mô tả điều kiện của form đăng ký
 const signUpSchema = z.object({
     firstname: z.string().min(1, "Tên bắt buộc phải có"),
     lastname: z.string().min(1, "Họ bắt buộc phải có"),
@@ -18,8 +17,6 @@ const signUpSchema = z.object({
     password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
 });
 
-// Khai báo type cho form
-// infer -> tự suy ra kiểu -> từ schema tự suy ra kiểu cho form
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export function SignupForm({
@@ -28,25 +25,20 @@ export function SignupForm({
 }: React.ComponentProps<"div">) {
     const { signUp } = useAuthStore();
     const navigate = useNavigate();
-
-    // Hook xử lý logic của form
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<SignUpFormValues>({
-        // truyền generic vào useForm để form nhận được type của input
-        resolver: zodResolver(signUpSchema), // để kết nối useForm với zodSchema đã định nghĩa
+        resolver: zodResolver(signUpSchema),
     });
 
     const onSubmit = async (data: SignUpFormValues) => {
-        // data: SignUpFormValues -> tất cả input mà user nhập vào
         const { firstname, lastname, username, email, password } = data;
 
-        // gọi api backend để signup
+        // gọi backend để signup
         await signUp(username, password, email, firstname, lastname);
 
-        // redirect user qua trang đăng nhập sau khi đăng ký thành công
         navigate("/signin");
     };
 
@@ -59,14 +51,15 @@ export function SignupForm({
                         onSubmit={handleSubmit(onSubmit)}
                     >
                         <div className="flex flex-col gap-6">
-                            {/* Header - Logo */}
+                            {/* header - logo */}
                             <div className="flex flex-col items-center text-center gap-2">
                                 <a
                                     href="/"
                                     className="mx-auto block w-fit text-center"
                                 >
-                                    <img src="/logo.svg" alt="Logo" />
+                                    <img src="/logo.svg" alt="logo" />
                                 </a>
+
                                 <h1 className="text-2xl font-bold">
                                     Tạo tài khoản Moji
                                 </h1>
@@ -75,7 +68,7 @@ export function SignupForm({
                                 </p>
                             </div>
 
-                            {/* Họ và tên */}
+                            {/* họ & tên */}
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="space-y-2">
                                     <Label
@@ -89,16 +82,16 @@ export function SignupForm({
                                         id="lastname"
                                         {...register("lastname")}
                                     />
-                                    {/* Todo: error message */}
+
                                     {errors.lastname && (
-                                        <p className="text-destructive text-sm">
+                                        <p className="error-message">
                                             {errors.lastname.message}
                                         </p>
                                     )}
                                 </div>
                                 <div className="space-y-2">
                                     <Label
-                                        htmlFor="firstname"
+                                        htmlFor="fistname"
                                         className="block text-sm"
                                     >
                                         Tên
@@ -108,16 +101,15 @@ export function SignupForm({
                                         id="firstname"
                                         {...register("firstname")}
                                     />
-                                    {/* Todo: error message */}
                                     {errors.firstname && (
-                                        <p className="text-destructive text-sm">
+                                        <p className="error-message">
                                             {errors.firstname.message}
                                         </p>
                                     )}
                                 </div>
                             </div>
 
-                            {/* Username */}
+                            {/* username */}
                             <div className="flex flex-col gap-3">
                                 <Label
                                     htmlFor="username"
@@ -131,15 +123,14 @@ export function SignupForm({
                                     placeholder="moji"
                                     {...register("username")}
                                 />
-                                {/* Todo: error message */}
                                 {errors.username && (
-                                    <p className="text-destructive text-sm">
+                                    <p className="error-message">
                                         {errors.username.message}
                                     </p>
                                 )}
                             </div>
 
-                            {/* Email */}
+                            {/* email */}
                             <div className="flex flex-col gap-3">
                                 <Label
                                     htmlFor="email"
@@ -150,18 +141,17 @@ export function SignupForm({
                                 <Input
                                     type="email"
                                     id="email"
-                                    placeholder="moji@gmail.com"
+                                    placeholder="m@gmail.com"
                                     {...register("email")}
                                 />
-                                {/* Todo: error message */}
                                 {errors.email && (
-                                    <p className="text-destructive text-sm">
+                                    <p className="error-message">
                                         {errors.email.message}
                                     </p>
                                 )}
                             </div>
 
-                            {/* Password */}
+                            {/* password */}
                             <div className="flex flex-col gap-3">
                                 <Label
                                     htmlFor="password"
@@ -174,24 +164,24 @@ export function SignupForm({
                                     id="password"
                                     {...register("password")}
                                 />
-                                {/* Todo: error message */}
                                 {errors.password && (
-                                    <p className="text-destructive text-sm">
+                                    <p className="error-message">
                                         {errors.password.message}
                                     </p>
                                 )}
                             </div>
 
-                            {/* Button đăng ký */}
+                            {/* nút đăng ký */}
                             <Button
                                 type="submit"
                                 className="w-full"
-                                disabled={isSubmitting} // vô hiệu hoá button khi form đang gửi
+                                disabled={isSubmitting}
                             >
                                 Tạo tài khoản
                             </Button>
+
                             <div className="text-center text-sm">
-                                Đã có tài khoản{" "}
+                                Đã có tài khoản?{" "}
                                 <a
                                     href="/signin"
                                     className="underline underline-offset-4"
@@ -201,7 +191,7 @@ export function SignupForm({
                             </div>
                         </div>
                     </form>
-                    <div className="relative hidden bg-muted md:block">
+                    <div className="bg-muted relative hidden md:block">
                         <img
                             src="/placeholderSignUp.png"
                             alt="Image"
@@ -210,7 +200,7 @@ export function SignupForm({
                     </div>
                 </CardContent>
             </Card>
-            <div className="px-6 text-center text-xs text-balance *:[a]:hover:text-primary text-muted-foreground *:[a]:underline *:[a]:underline-offset-4">
+            <div className=" text-xs text-balance px-6 text-center *:[a]:hover:text-primary text-muted-foreground *:[a]:underline *:[a]:underline-offetset-4">
                 Bằng cách tiếp tục, bạn đồng ý với{" "}
                 <a href="#">Điều khoản dịch vụ</a> và{" "}
                 <a href="#">Chính sách bảo mật</a> của chúng tôi.
@@ -218,14 +208,3 @@ export function SignupForm({
         </div>
     );
 }
-
-// zod -> kiểm tra dữ liệu
-// zodResolvers -> kết nối zod với react-hook-form
-// react-hook-form -> quản lý trạng thái và sự kiện của form
-
-// useForm
-// register -> hàm giúp theo dõi các giá trị trong input (register là 1 function chứa obj)
-// handleSubmit -> hàm sẽ chạy khi người dùng nhấn button đăng ký
-// formState -> lấy ra trạng thái của form (error: nếu có input ko hợp lệ, isSubmitting: boolean để biết khi nào form đang trong quá trình gửi dữ liệu)
-
-// {...register("lastname")} -> spread operator, kết nối input đó với RHF

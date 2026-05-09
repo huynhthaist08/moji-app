@@ -10,32 +10,20 @@ export const authService = {
     ) => {
         const res = await api.post(
             "/auth/signup",
-            {
-                username,
-                password,
-                email,
-                firstName,
-                lastName,
-            },
+            { username, password, email, firstName, lastName },
             { withCredentials: true },
         );
 
-        // lấy dữ liệu trả về
         return res.data;
     },
 
     signIn: async (username: string, password: string) => {
         const res = await api.post(
-            "/auth/signin",
-            {
-                username,
-                password,
-            },
+            "auth/signin",
+            { username, password },
             { withCredentials: true },
         );
-
-        // lấy dữ liệu trả về
-        return res.data; // data: accessToken
+        return res.data; // access token
     },
 
     signOut: async () => {
