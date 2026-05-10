@@ -59,6 +59,12 @@ export const checkGroupMembership = async (req, res, next) => {
         const { conversationId } = req.body;
         const userId = req.user._id;
 
+        if (!conversationId || typeof conversationId !== \"string\" || conversationId.length !== 24) {
+            return res
+                .status(400)
+                .json({ message: \"ID cuộc trò chuyện không hợp lệ\" });
+        }
+
         const conversation = await Conversation.findById(conversationId);
 
         if (!conversation) {

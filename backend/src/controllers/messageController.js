@@ -11,10 +11,14 @@ export const sendDirectMessage = async (req, res) => {
         const { recipientId, content, conversationId } = req.body;
         const senderId = req.user._id;
 
-        let conversation;
+        if (!recipientId || typeof recipientId !== "string" || recipientId.length !== 24) {
+            return res
+                .status(400)
+                .json({ message: "ID người nhận không hợp lệ" });
+        }
 
-        if (!content) {
-            return res.status(400).json({ message: "Thiếu nội dung" });
+        if (!content || !content.trim()) {
+            return res.status(400).json({ message: "Nội dung tin nhắn không được để trống" });
         }
 
         if (conversationId) {
@@ -58,8 +62,8 @@ export const sendGroupMessage = async (req, res) => {
         const senderId = req.user._id;
         const conversation = req.conversation;
 
-        if (!content) {
-            return res.status(400).json("Thiếu nội dung");
+        if (!content || !content.trim()) {
+            return res.status(400).json({ message: "Nội dung tin nhắn không được để trống" });
         }
 
         const message = await Message.create({

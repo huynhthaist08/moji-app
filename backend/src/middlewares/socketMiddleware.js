@@ -28,6 +28,9 @@ export const socketAuthMiddleware = async (socket, next) => {
         next();
     } catch (error) {
         console.error("Lỗi khi verify JWT trong socketMiddleware", error);
-        next(new Error("Unauthorized"));
+        const errorMsg = error.name === \"JsonWebTokenError\" 
+            ? \"Token không hợp lệ\" 
+            : \"Lỗi xác thực\";
+        next(new Error(errorMsg));
     }
 };

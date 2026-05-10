@@ -8,7 +8,13 @@ export const sendFriendRequest = async (req, res) => {
 
         const from = req.user._id;
 
-        if (from === to) {
+        if (!to || typeof to !== "string" || to.length !== 24) {
+            return res
+                .status(400)
+                .json({ message: "ID người dùng không hợp lệ" });
+        }
+
+        if (from.toString() === to?.toString()) {
             return res
                 .status(400)
                 .json({

@@ -14,11 +14,9 @@ export const createConversation = async (req, res) => {
             !Array.isArray(memberIds) ||
             memberIds.length === 0
         ) {
-            return res
-                .status(400)
-                .json({
-                    message: "Tên nhóm và danh sách thành viên là bắt buộc",
-                });
+            return res.status(400).json({
+                message: "Tên nhóm và danh sách thành viên là bắt buộc",
+            });
         }
 
         let conversation;
@@ -26,20 +24,20 @@ export const createConversation = async (req, res) => {
         if (type === "direct") {
             const participantId = memberIds[0];
 
-            conversation = await Conversation.findOne({
-                type: "direct",
-                "participants.userId": { $all: [userId, participantId] },
-            });
-
-            if (!conversation) {
-                conversation = new Conversation({
+            conversation = await Conversation.findOneAndUpdate(
+                {
                     type: "direct",
-                    participants: [{ userId }, { userId: participantId }],
-                    lastMessageAt: new Date(),
-                });
-
-                await conversation.save();
-            }
+                    "participants.userId": { $all: [userId, participantId] },
+                },
+                {
+                    $setOnInsert: {
+                        type: "direct",
+                        participants: [{ userId }, { userId: participantId }],
+                        lastMessageAt: new Date(),
+                    },
+                },
+                { upsert: true, new: true },
+            );
         }
 
         if (type === "group") {
@@ -244,7 +242,7 @@ export const markAsSeen = async (req, res) => {
 
         return res.status(200).json({
             message: "Marked as seen",
-            seenBy: updated?.sennBy || [],
+            seenBy: updated?.seenBy || [],
             myUnreadCount: updated?.unreadCounts[userId] || 0,
         });
     } catch (error) {

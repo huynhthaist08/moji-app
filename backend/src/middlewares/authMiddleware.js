@@ -43,7 +43,7 @@ export const protectedRoute = (req, res, next) => {
 
                 // trả user về trong req
                 req.user = user;
-                next();
+                return next();
             },
         );
     } catch (error) {
