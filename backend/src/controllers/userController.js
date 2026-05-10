@@ -58,7 +58,7 @@ export const uploadAvatar = async (req, res) => {
         ).select("avatarUrl");
 
         if (!updatedUser || !updatedUser.avatarUrl) {
-            return res.status(400).json({ message: \"Cập nhật avatar thất bại\" });
+            return res.status(400).json({ message: "Cập nhật avatar thất bại" });
         }
 
         return res.status(200).json({ avatarUrl: updatedUser.avatarUrl });

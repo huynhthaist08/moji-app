@@ -84,6 +84,11 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     disconnectSocket: () => {
         const socket = get().socket;
         if (socket) {
+            socket.off("connect");
+            socket.off("online-users");
+            socket.off("new-message");
+            socket.off("read-message");
+            socket.off("new-group");
             socket.disconnect();
             set({ socket: null });
         }

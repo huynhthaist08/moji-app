@@ -25,16 +25,16 @@ api.interceptors.response.use(
 
         // những api không cần check
         if (
-            originalRequest.url.includes("/auth/signin") ||
-            originalRequest.url.includes("/auth/signup") ||
-            originalRequest.url.includes("/auth/refresh")
+            originalRequest.url?.includes("/auth/signin") ||
+            originalRequest.url?.includes("/auth/signup") ||
+            originalRequest.url?.includes("/auth/refresh")
         ) {
             return Promise.reject(error);
         }
 
         originalRequest._retryCount = originalRequest._retryCount || 0;
 
-        if (error.response?.status === 403 && originalRequest._retryCount < 4) {
+        if (error.response?.status === 403 && originalRequest._retryCount < 2) {
             originalRequest._retryCount += 1;
 
             try {

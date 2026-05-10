@@ -154,7 +154,7 @@ export const refreshToken = async (req, res) => {
                 .json({ message: "Token không hợp lệ hoặc đã hết hạn" });
         }
         if (!session.expiresAt || !(session.expiresAt instanceof Date)) {
-            return res.status(403).json({ message: \"Session không hợp lệ\" });
+            return res.status(403).json({ message: "Session không hợp lệ" });
         }
         // kiểm tra hết hạn chưa
         if (session.expiresAt < new Date()) {
