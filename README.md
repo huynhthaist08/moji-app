@@ -1,0 +1,3 @@
+A real-time chat application built following a professional tutorial to master the MERN stack and Socket.io. Through this project, I learned how to implement instant messaging, handle real-time events, and manage secure user authentication. It helped me understand how to synchronize data between the server and multiple clients effectively. However, the current app still has bugs and is not yet stable.
+
+Tech stack: TypeScript, Nodejs, Express, React, TailwindCSS, Socket.io and other libs/framework...
