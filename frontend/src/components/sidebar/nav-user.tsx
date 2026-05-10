@@ -17,7 +17,7 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 import type { User } from "@/types/user";
-import Logout from "../auth/Logout";
+import Logout from "../auth/logout";
 import { useState } from "react";
 import FriendRequestDialog from "../friendRequest/FriendRequestDialog";
 import ProfileDialog from "../profile/ProfileDialog";
